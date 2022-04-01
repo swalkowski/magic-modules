@@ -187,16 +187,15 @@ func Provider() *schema.Provider {
 			OrgPolicyEndpointEntryKey:                       OrgPolicyEndpointEntry,
 			PrivatecaCertificateTemplateEndpointEntryKey:    PrivatecaCertificateTemplateCustomEndpointEntry,
 			RecaptchaEnterpriseEndpointEntryKey:             RecaptchaEnterpriseEndpointEntry,
-			ContainerAwsCustomEndpointEntryKey:              ContainerAwsCustomEndpointEntry,
-			ContainerAzureCustomEndpointEntryKey:            ContainerAzureCustomEndpointEntry,
-			ApikeysEndpointEntryKey:                         ApikeysEndpointEntry,
+			ContainerAwsCustomEndpointEntryKey:    ContainerAwsCustomEndpointEntry,
+			ContainerAzureCustomEndpointEntryKey:    ContainerAzureCustomEndpointEntry,
+			ApikeysEndpointEntryKey:               ApikeysEndpointEntry,
 
 			<% if version == "private" -%>
 			VmwareEndpointEntryKey:                          VmwareEndpointEntry,
-			RunEndpointEntryKey:                             RunEndpointEntry,
 			<% end -%>
 
-			CloudBuildWorkerPoolEndpointEntryKey:            CloudBuildWorkerPoolEndpointEntry,
+			CloudBuildWorkerPoolEndpointEntryKey:               CloudBuildWorkerPoolEndpointEntry,
 },
 
 		ProviderMetaSchema: map[string]*schema.Schema{
@@ -256,6 +255,9 @@ func Provider() *schema.Provider {
 			"google_container_engine_versions":                 dataSourceGoogleContainerEngineVersions(),
 			"google_container_registry_image":                  dataSourceGoogleContainerImage(),
 			"google_container_registry_repository":             dataSourceGoogleContainerRepo(),
+			<% unless version == 'ga' -%>
+			"google_dataproc_metastore_service":                dataSourceDataprocMetastoreService(),
+			<% end -%>
 			"google_dns_keys":                                  dataSourceDNSKeys(),
 			"google_dns_managed_zone":                          dataSourceDnsManagedZone(),
 			"google_dns_record_set":                            dataSourceDnsRecordSet(),
@@ -503,7 +505,6 @@ end     # products.each do
 				<% if version == 'private' -%>
 				"google_vmware_private_cloud":                  resourceVmwarePrivateCloud(),
 				"google_vmware_cluster":                        resourceVmwareCluster(),
-				"google_cloud_run_job":                         resourceRunJob(),
 				<% end -%>
 				// ####### END tpgtools resources ###########
 			},
